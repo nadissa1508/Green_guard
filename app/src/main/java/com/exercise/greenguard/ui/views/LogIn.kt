@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -35,7 +36,9 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -46,6 +49,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import com.exercise.greenguard.ui.theme.*
 
 
 class LogIn : ComponentActivity() {
@@ -143,9 +147,17 @@ fun MenuElements(
                         value = username,
                         onValueChange = { username = it },
                         label = { Text("Nombre de usuario") },
-
                         shape = RoundedCornerShape(26.dp),
+                        colors = TextFieldDefaults.colors(
+                            focusedLabelColor = Gray,
+                            unfocusedLabelColor = Gray,
+                            unfocusedIndicatorColor = White,
+                            focusedIndicatorColor = White,
+                            focusedContainerColor = LightGray,
+                            unfocusedContainerColor = LightGray,
+                            disabledContainerColor = LightGray
 
+                        ),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 10.dp)
@@ -161,6 +173,15 @@ fun MenuElements(
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     shape = RoundedCornerShape(26.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedLabelColor = Gray,
+                        unfocusedLabelColor = Gray,
+                        unfocusedIndicatorColor = White,
+                        focusedIndicatorColor = White,
+                        focusedContainerColor = LightGray,
+                        unfocusedContainerColor = LightGray,
+                        disabledContainerColor = LightGray
+                    ),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 10.dp)
@@ -178,6 +199,12 @@ fun MenuElements(
 
                 ElevatedButton(
                     onClick = onClickButtonLogIn,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = GreenBlue,
+                        contentColor = White,
+                        disabledContainerColor = GreenBlue,
+                        disabledContentColor = White
+                    ),
                     modifier = Modifier
                         .padding(vertical = 8.dp)
                         .width(200.dp)
@@ -186,8 +213,7 @@ fun MenuElements(
                     Text(
                         "INICIAR SESIÓN",
                         fontWeight = FontWeight.Bold,
-                        color = Color.Black,
-                        modifier = Modifier.padding(top = 8.dp)
+                        modifier = Modifier.padding(vertical = 8.dp)
                     )
                 }
                 Text(
