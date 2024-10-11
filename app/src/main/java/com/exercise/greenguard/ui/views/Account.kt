@@ -53,7 +53,7 @@ fun CuentaApp(modifier: Modifier = Modifier){
             Column(
                 modifier = Modifier
                     .height(750.dp)
-                    .width(375.dp)
+                    .width(355.dp)
                     .background(Color(0xfffafbf5))
             ) {
                 Row (modifier = Modifier.padding(20.dp),) {

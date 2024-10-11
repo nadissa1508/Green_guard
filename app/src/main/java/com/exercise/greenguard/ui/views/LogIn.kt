@@ -111,9 +111,9 @@ fun MenuElements(
         Box(
             modifier = Modifier
                 .padding(bottom = 18.dp)
-                .width(300.dp)
+                .width(310.dp)
                 .height(500.dp)
-                .clip(RoundedCornerShape(16.dp))
+                .clip(RoundedCornerShape(30.dp))
                 .background(Color.White.copy(alpha = 0.94f))
                 .align(Alignment.Center)
         ) {

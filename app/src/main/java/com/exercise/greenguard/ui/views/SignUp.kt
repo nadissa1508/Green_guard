@@ -50,16 +50,17 @@ fun RegistroApp(modifier: Modifier = Modifier){
         Card (modifier = Modifier, RoundedCornerShape(45.dp)) {
             Column(
                 modifier = Modifier
-                    .height(650.dp)
-                    .width(375.dp)
+                    .height(600.dp)
+                    .width(350.dp)
                     .background(Color(0xfffafbf5)),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(painter = logo, contentDescription = null, modifier = Modifier.size(250.dp))
+                Image(painter = logo, contentDescription = null, modifier = Modifier.size(210.dp))
                 Datos(texto = "Nombre de Usuario", onValueChange = { nombre = it })
-                Datos(texto = "Contraseña", onValueChange = { contraseña = it })
                 Datos(texto = "Correo electrónico", onValueChange = { correo = it })
+                //Cambiar a textfield especifico para contraseñas
+                Datos(texto = "Contraseña", onValueChange = { contraseña = it })
                 Button(
                     modifier = Modifier.padding(25.dp)
                         .height(55.dp)
