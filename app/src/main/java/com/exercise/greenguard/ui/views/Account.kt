@@ -42,6 +42,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -85,14 +86,33 @@ fun CuentaApp(modifier: Modifier = Modifier){
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(100.dp))
-                Text(text = "Glosario", fontSize = 30.sp, fontWeight = FontWeight.Bold)
-                Column(modifier = Modifier.fillMaxWidth(1f)) {
-                    Row(modifier = Modifier.weight(1f)) {
+                Spacer(modifier = Modifier.height(70.dp))
+                Text(
+                    text = "Glosario",
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                Column(modifier = Modifier.fillMaxWidth(1f), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Row(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+
+                    ) {
                         Logros(icono = conservacion, color = Color(0xFFffde59))
                         Logros(icono = desafíos, color = Color(0xFFff914d))
                     }
-                    Row(modifier = Modifier.weight(1f)) {
+                    Row(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
                         Logros(icono = positivos, color = Color(0xFFffbd59))
                         Logros(icono = desastres, color = Color(0xFFff3131))
                     }
@@ -107,7 +127,7 @@ fun Logros(modifier: Modifier = Modifier, icono: Painter, color: Color){
     Card(
         modifier = Modifier
             .height(200.dp)
-            .width(120.dp),
+            .width(130.dp),
         shape = RoundedCornerShape(40.dp),
         colors = CardDefaults.cardColors(
             containerColor = color
