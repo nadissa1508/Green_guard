@@ -10,15 +10,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
@@ -31,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -46,6 +51,11 @@ import com.exercise.greenguard.R
 fun CuentaApp(modifier: Modifier = Modifier){
     val fondo = painterResource(id = R.drawable.fondo_juego2)
     val usuario = painterResource(id = R.drawable.usuario)
+
+    val conservacion = painterResource(id = R.drawable.icon_conservacion)
+    val desafíos = painterResource(id = R.drawable.icon_desafios)
+    val desastres = painterResource(id = R.drawable.icon_desastres)
+    val positivos = painterResource(id = R.drawable.icon_ev_positivos)
 
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center){
         Image(painter = fondo, contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
@@ -69,13 +79,43 @@ fun CuentaApp(modifier: Modifier = Modifier){
                         Text(modifier = Modifier.padding(bottom = 10.dp), text = "Mi Cuenta", fontSize = 30.sp, fontWeight = FontWeight.Bold)
                         Column {
                             Text(text = "PROGRESO")
-                            LinearProgressIndicator(modifier = Modifier.height(20.dp).clip(RoundedCornerShape(20.dp), ), progress = 0.7f)
+                            LinearProgressIndicator(modifier = Modifier
+                                .height(20.dp)
+                                .clip(RoundedCornerShape(20.dp),), progress = 0.7f)
                         }
                     }
                 }
                 Spacer(modifier = Modifier.height(100.dp))
                 Text(text = "Glosario", fontSize = 30.sp, fontWeight = FontWeight.Bold)
+                Column(modifier = Modifier.fillMaxWidth(1f)) {
+                    Row(modifier = Modifier.weight(1f)) {
+                        Logros(icono = conservacion, color = Color(0xFFffde59))
+                        Logros(icono = desafíos, color = Color(0xFFff914d))
+                    }
+                    Row(modifier = Modifier.weight(1f)) {
+                        Logros(icono = positivos, color = Color(0xFFffbd59))
+                        Logros(icono = desastres, color = Color(0xFFff3131))
+                    }
+                }
             }
+        }
+    }
+}
+
+@Composable
+fun Logros(modifier: Modifier = Modifier, icono: Painter, color: Color){
+    Card(
+        modifier = Modifier
+            .height(200.dp)
+            .width(120.dp),
+        shape = RoundedCornerShape(40.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = color
+        ),
+
+        ) {
+        Box (modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Image(modifier = Modifier.size(100.dp), painter = icono, contentDescription = null, contentScale = ContentScale.Crop)
         }
     }
 }

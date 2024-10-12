@@ -54,6 +54,7 @@ import com.exercise.greenguard.ui.theme.GreenGuardTheme
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.ui.graphics.painter.Painter
 
 class Game : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,6 +79,10 @@ fun GameResources(
 
 ) {
     val fondo = painterResource(id = R.drawable.fondo_juego2)
+    val conservacion = painterResource(id = R.drawable.icon_conservacion)
+    val desafíos = painterResource(id = R.drawable.icon_desafios)
+    val desastres = painterResource(id = R.drawable.icon_desastres)
+    val positivos = painterResource(id = R.drawable.icon_ev_positivos)
 
     Box(modifier) {
 
@@ -193,87 +198,10 @@ fun GameResources(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = RedLight,
-                    ),
-                    modifier = Modifier
-                        .height(150.dp)
-                        .width(90.dp)
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        val icon_desastres = painterResource(id = R.drawable.icon_desastres)
-                        Image(
-                            painter = icon_desastres,
-                            contentDescription = "Tarjeta de categoría: Desastres Naturales",
-                            modifier = Modifier.size(70.dp)
-                        )
-                    }
-                }
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = Orange,
-                    ),
-                    modifier = Modifier
-                        .height(150.dp)
-                        .width(90.dp)
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        val icon_desafios = painterResource(id = R.drawable.icon_desafios)
-                        Image(
-                            painter = icon_desafios,
-                            contentDescription = "Tarjeta de categoría: Desafíos ambientales",
-                            modifier = Modifier.size(70.dp)
-                        )
-                    }
-                }
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = OrangeLight,
-                    ),
-                    modifier = Modifier
-                        .height(150.dp)
-                        .width(90.dp)
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        val icon_ev_positivos = painterResource(id = R.drawable.icon_ev_positivos)
-                        Image(
-                            painter = icon_ev_positivos,
-                            contentDescription = "Hoja",
-                            modifier = Modifier.size(70.dp)
-                        )
-                    }
-                }
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = Yellow,
-                    ),
-                    modifier = Modifier
-                        .height(150.dp)
-                        .width(90.dp)
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        val icon_conservacion = painterResource(id = R.drawable.icon_conservacion)
-                        Image(
-                            painter = icon_conservacion,
-                            contentDescription = "Reciclaje",
-                            modifier = Modifier.size(70.dp)
-                        )
-                    }
-
-                }
+                Tarjetas(color = RedLight, icono = desastres)
+                Tarjetas(color = Orange, icono = desafíos)
+                Tarjetas(color = OrangeLight, icono = positivos)
+                Tarjetas(color = Yellow, icono = conservacion)
             }
 
 
@@ -283,6 +211,28 @@ fun GameResources(
     }
 }
 
+@Composable
+fun Tarjetas(modifier: Modifier = Modifier, color: Color, icono: Painter){
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = color,
+        ),
+        modifier = Modifier
+            .height(150.dp)
+            .width(90.dp)
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Image(
+                painter = icono,
+                contentDescription = null,
+                modifier = Modifier.size(70.dp)
+            )
+        }
+    }
+}
 
 @Preview(
     showBackground = true,
