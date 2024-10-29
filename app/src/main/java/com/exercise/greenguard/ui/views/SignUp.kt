@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.exercise.greenguard.R
 
 @Composable
-fun RegistroApp(modifier: Modifier = Modifier){
+fun RegistroApp(modifier: Modifier = Modifier, siguiente: () -> Unit){
     val fondo = painterResource(id = R.drawable.fondo_juego)
     val logo = painterResource(id = R.drawable.logo_green_guard)
 
@@ -65,7 +65,7 @@ fun RegistroApp(modifier: Modifier = Modifier){
                     modifier = Modifier.padding(25.dp)
                         .height(55.dp)
                         .width(200.dp),
-                    onClick = { /*TODO*/ },
+                    onClick = { siguiente() },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xff33c7b7),
                     )
@@ -81,8 +81,7 @@ fun RegistroApp(modifier: Modifier = Modifier){
 @Composable
 fun Datos(texto: String, onValueChange: (String) -> Unit,){
     TextField(
-        modifier = Modifier.padding(10.dp)
-            .height(45.dp),
+        modifier = Modifier.height(75.dp).padding(vertical = 10.dp),
         value = texto,
         onValueChange = onValueChange,
         shape = RoundedCornerShape(26.dp),
@@ -101,5 +100,5 @@ fun Datos(texto: String, onValueChange: (String) -> Unit,){
 @Composable
 @Preview
 fun RegistroPreview(){
-    RegistroApp()
+    RegistroApp(siguiente = {})
 }

@@ -31,38 +31,29 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            GreenGuardTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MenuElements(
-                        modifier = Modifier.padding(innerPadding),
-                        onClickButtonGame = { /* Acción para iniciar el juego */ },
-                        onClickButtonLogIn = { /* Acción para iniciar sesión */ }
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ElevatedButton(onClick: () -> Unit) {
-    TextButton(
-        onClick = { onClick() }
-    ) {
-        Text("text Button")
-    }
-}
+//class MainActivity : ComponentActivity() {
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        enableEdgeToEdge()
+//        setContent {
+//            GreenGuardTheme {
+//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+//                    MenuElements(
+//                        modifier = Modifier.padding(innerPadding),
+//                        onClickButtonGame = { /* Acción para iniciar el juego */ },
+//                        onClickButtonLogIn = { /* Acción para iniciar sesión */ }
+//                    )
+//                }
+//            }
+//        }
+//    }
+//}
 
 @Composable
 fun MenuElements(
     modifier: Modifier = Modifier,
-    onClickButtonGame: () -> Unit,
-    onClickButtonLogIn: () -> Unit
+    siguiente: () -> Unit,
+    juego: () -> Unit
 ){
     val fondo = painterResource(id = R.drawable.fondo_juego)
     val icon = painterResource(id = R.drawable.logo_green_guard)
@@ -103,7 +94,7 @@ fun MenuElements(
                 )
             }
             ElevatedButton(
-                onClick = onClickButtonGame,
+                onClick = juego,
                 modifier = Modifier.padding(vertical = 4.dp)
                     .width(200.dp)
                     .height(50.dp)
@@ -116,7 +107,7 @@ fun MenuElements(
             }
 
             ElevatedButton(
-                onClick = onClickButtonLogIn,
+                onClick = siguiente,
                 modifier = Modifier.padding(vertical = 8.dp)
                     .width(200.dp)
                     .height(50.dp)
@@ -142,7 +133,8 @@ fun MenuElements(
 fun MenuElementsPreview() {
     GreenGuardTheme {
         MenuElements(
-            onClickButtonGame = { /* Acción para iniciar el juego en la vista previa */ },
-            onClickButtonLogIn = { /* Acción para iniciar sesión en la vista previa */ })
+            siguiente = {},
+            juego = {}
+        )
     }
 }

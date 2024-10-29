@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">GreenGuard</string>
+    <string name="Inicio">Pagina de inicio la cual se abrira al abrir la applicacion</string>
+    <string name="Registro">Ventana para registrarte tu cuenta</string>
+    <string name="Login">Pestaña para iniciar tu sesion</string>
+    <string name="Cuenta">Apartado de cuenta del usuario</string>
+    <string name="Juego">Pantalla del juego principal</string>
 </resources>

@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -65,6 +66,7 @@ class Game : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     GameResources(
                         modifier = Modifier.padding(innerPadding),
+                        cuenta = {}
                     )
                 }
             }
@@ -76,6 +78,7 @@ class Game : ComponentActivity() {
 @Composable
 fun GameResources(
     modifier: Modifier = Modifier,
+    cuenta: () -> Unit
 
 ) {
     val fondo = painterResource(id = R.drawable.fondo_juego2)
@@ -83,6 +86,7 @@ fun GameResources(
     val desafíos = painterResource(id = R.drawable.icon_desafios)
     val desastres = painterResource(id = R.drawable.icon_desastres)
     val positivos = painterResource(id = R.drawable.icon_ev_positivos)
+    val usuario = painterResource(id = R.drawable.usuario)
 
     Box(modifier) {
 
@@ -100,13 +104,28 @@ fun GameResources(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = "RECURSOS: 310",
-                fontSize = 26.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Left,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
+
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = "RECURSOS: 310",
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Left,
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Image(
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(RoundedCornerShape(100.dp))
+                        .clickable { cuenta() },
+                    contentScale = ContentScale.Crop,
+                    painter = usuario,
+                    contentDescription = null
+                )
+            }
+
 
             Spacer(modifier = Modifier.height(180.dp))
 
@@ -244,6 +263,6 @@ fun Tarjetas(modifier: Modifier = Modifier, color: Color, icono: Painter){
 @Composable
 fun GameResourcesPreview() {
     GreenGuardTheme {
-        GameResources()
+        GameResources(cuenta = {})
     }
 }

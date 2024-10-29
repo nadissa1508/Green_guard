@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
@@ -47,6 +49,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import com.exercise.greenguard.ui.theme.*
@@ -59,22 +62,14 @@ class LogIn : ComponentActivity() {
         setContent {
             GreenGuardTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MenuElements(
+                    LogInScreen(
                         modifier = Modifier.padding(innerPadding),
-                        onClickButtonLogIn = { /* Acción para iniciar sesión */ }
+                        siguiente = {},
+                        juego = {}
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun ElevatedButton(onClick: () -> Unit) {
-    TextButton(
-        onClick = { onClick() }
-    ) {
-        Text("text Button")
     }
 }
 
@@ -88,9 +83,10 @@ fun ContentColorComponent(
 }
 
 @Composable
-fun MenuElements(
+fun LogInScreen(
     modifier: Modifier = Modifier,
-    onClickButtonLogIn: () -> Unit
+    siguiente: () -> Unit,
+    juego: () -> Unit,
 ) {
     val fondo = painterResource(id = R.drawable.fondo_juego)
     val icon = painterResource(id = R.drawable.logo_green_guard)
@@ -198,7 +194,7 @@ fun MenuElements(
                 )
 
                 ElevatedButton(
-                    onClick = onClickButtonLogIn,
+                    onClick = juego,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = GreenBlue,
                         contentColor = White,
@@ -216,9 +212,9 @@ fun MenuElements(
                         modifier = Modifier.padding(vertical = 8.dp)
                     )
                 }
-                Text(
-                    text = "¿No tienes una cuenta? Registrate",
-                    fontSize = 12.sp,
+                ClickableText(
+                    text = AnnotatedString("¿No tienes una cuenta? Registrate"),
+                    onClick = {siguiente()},
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
@@ -237,7 +233,9 @@ fun MenuElements(
 @Composable
 fun MenuElementsPreview() {
     GreenGuardTheme {
-        MenuElements(
-            onClickButtonLogIn = { /* Acción para iniciar sesión en la vista previa */ })
+        LogInScreen(
+            siguiente = {},
+            juego = {}
+            )
     }
 }
