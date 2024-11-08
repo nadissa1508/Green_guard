@@ -3,34 +3,24 @@ package com.exercise.greenguard
 import android.annotation.SuppressLint
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.exercise.greenguard.ui.theme.GreenGuardTheme
-import com.exercise.greenguard.ui.views.CuentaApp
-import com.exercise.greenguard.ui.views.GameResources
-import com.exercise.greenguard.ui.views.LogInScreen
-import com.exercise.greenguard.ui.views.RegistroApp
+import com.exercise.greenguard.view.CuentaApp
+import com.exercise.greenguard.view.GameResources
+import com.exercise.greenguard.view.LogInScreen
+import com.exercise.greenguard.view.RegistroApp
 
 enum class GreenGuardScreen (@StringRes val title: Int){
     Inicio (title = R.string.Inicio),

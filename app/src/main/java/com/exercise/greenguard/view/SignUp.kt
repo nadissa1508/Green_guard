@@ -1,4 +1,4 @@
-package com.exercise.greenguard.ui.views
+package com.exercise.greenguard.view
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -34,15 +34,25 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.exercise.greenguard.R
+import com.google.firebase.auth.FirebaseAuth
+import android.widget.Toast
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import kotlinx.coroutines.launch
 
 @Composable
 fun RegistroApp(modifier: Modifier = Modifier, siguiente: () -> Unit){
+    val auth = FirebaseAuth.getInstance()
+    val scope = rememberCoroutineScope()
     val fondo = painterResource(id = R.drawable.fondo_juego)
     val logo = painterResource(id = R.drawable.logo_green_guard)
-
-    var nombre by remember { mutableStateOf("") }
-    var contraseña by remember { mutableStateOf("") }
-    var correo by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    var name by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var error by remember { mutableStateOf<String?>(null) }
 
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Image(painter = fondo, contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
@@ -57,20 +67,39 @@ fun RegistroApp(modifier: Modifier = Modifier, siguiente: () -> Unit){
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(painter = logo, contentDescription = null, modifier = Modifier.size(210.dp))
-                Datos(texto = "Nombre de Usuario", onValueChange = { nombre = it })
-                Datos(texto = "Correo electrónico", onValueChange = { correo = it })
-                //Cambiar a textfield especifico para contraseñas
-                Datos(texto = "Contraseña", onValueChange = { contraseña = it })
+                Datos(texto = "Nombre de Usuario", name,onValueChange = { name = it }, false)
+                Datos(texto = "Correo electrónico", email, onValueChange = { email = it }, false)
+                Datos(texto = "Contraseña", password,onValueChange = { password = it }, true)
+
                 Button(
                     modifier = Modifier.padding(25.dp)
                         .height(55.dp)
                         .width(200.dp),
-                    onClick = { siguiente() },
+                    onClick = {
+                                if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                                    error = "Por favor completa todos los campos"
+                                } else {
+                                    scope.launch {
+                                        auth.createUserWithEmailAndPassword(email, password)
+                                            .addOnCompleteListener { task ->
+                                                if (task.isSuccessful) {
+                                                    siguiente()
+                                                } else {
+                                                    error = task.exception?.message
+                                                }
+                                            }
+                                    }
+                                }
+                              },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xff33c7b7),
                     )
                 ) {
                     Text(text = "Registrarse")
+                }
+                if (error != null) {
+                    Toast.makeText(context, "Error, no es posible registrarse. Intente más tarde", Toast.LENGTH_SHORT).show()
+                    error = null;
                 }
             }
         }
@@ -79,23 +108,34 @@ fun RegistroApp(modifier: Modifier = Modifier, siguiente: () -> Unit){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Datos(texto: String, onValueChange: (String) -> Unit,){
+fun Datos(
+    texto: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    esPassword: Boolean
+) {
     TextField(
-        modifier = Modifier.height(75.dp).padding(vertical = 10.dp),
-        value = texto,
+        modifier = Modifier
+            .height(75.dp)
+            .padding(vertical = 10.dp),
+        value = value,
         onValueChange = onValueChange,
         shape = RoundedCornerShape(26.dp),
-        keyboardOptions = KeyboardOptions.Default.copy(
-            keyboardType = KeyboardType.Number,
-            imeAction = ImeAction.Next
-        ),
+        keyboardOptions = if (esPassword) {
+            KeyboardOptions(keyboardType = KeyboardType.Password)
+        } else {
+            KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text, imeAction = ImeAction.Next)
+        },
+        visualTransformation = if (esPassword) PasswordVisualTransformation() else VisualTransformation.None,
         colors = TextFieldDefaults.textFieldColors(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             containerColor = Color(0xffedf5f3)
-        )
+        ),
+        label = { Text(text = texto) }
     )
 }
+
 
 @Composable
 @Preview
