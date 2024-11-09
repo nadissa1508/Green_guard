@@ -12,15 +12,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.exercise.greenguard.data.repository.CardRepository
 import com.exercise.greenguard.ui.theme.GreenGuardTheme
 import com.exercise.greenguard.view.CuentaApp
 import com.exercise.greenguard.view.GameResources
 import com.exercise.greenguard.view.LogInScreen
 import com.exercise.greenguard.view.RegistroApp
+import com.exercise.greenguard.viewmodel.CardViewModel
+import androidx.compose.runtime.remember
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.exercise.greenguard.view.MainGameScreen
 
 enum class GreenGuardScreen (@StringRes val title: Int){
     Inicio (title = R.string.Inicio),
@@ -86,9 +92,10 @@ fun GreenGuardApp(){
 
             composable(route = GreenGuardScreen.Juego.name) {
                 GameResources(
-                    cuenta = { navController.navigate(GreenGuardScreen.Cuenta.name) }
+                    cuenta = { navController.navigate(GreenGuardScreen.Cuenta.name) },
                 )
             }
+
             composable (route = GreenGuardScreen.Cuenta.name){
                 CuentaApp()
             }

@@ -76,4 +76,6 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.realtime)
     implementation(libs.firebase.config)
+    implementation(libs.play.services.basement)
+
 }

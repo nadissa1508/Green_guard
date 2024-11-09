@@ -5,3 +5,4 @@ plugins {
     alias(libs.plugins.googleServices) apply false
     alias(libs.plugins.crashlytics) apply false
 }
+apply(plugin = "com.google.gms.google-services")
