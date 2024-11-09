@@ -31,24 +31,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 
-//class MainActivity : ComponentActivity() {
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
-//        setContent {
-//            GreenGuardTheme {
-//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    MenuElements(
-//                        modifier = Modifier.padding(innerPadding),
-//                        onClickButtonGame = { /* Acción para iniciar el juego */ },
-//                        onClickButtonLogIn = { /* Acción para iniciar sesión */ }
-//                    )
-//                }
-//            }
-//        }
-//    }
-//}
-
 @Composable
 fun MenuElements(
     modifier: Modifier = Modifier,
