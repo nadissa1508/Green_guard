@@ -1,46 +1,51 @@
-package com.exercise.greenguard.viewmodel
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.exercise.greenguard.data.model.Card
+import com.exercise.greenguard.data.model.Tarjeta
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import com.exercise.greenguard.data.repository.CardRepository
+import kotlinx.coroutines.flow.update
 
-object CardViewModel : ViewModel() {
+class CardViewModel : ViewModel() {
+    private val db = FirebaseFirestore.getInstance()
+    private val _tarjetas = MutableStateFlow<List<Tarjeta>>(emptyList())
+    val tarjetas: StateFlow<List<Tarjeta>> = _tarjetas
 
-    private val _tarjetaSeleccionada = MutableStateFlow<Card?>(null)
-    val tarjetaSeleccionada: StateFlow<Card?> get() = _tarjetaSeleccionada
+    private val _earnedCards = MutableStateFlow<List<Tarjeta>>(emptyList())
+    val earnedCards: StateFlow<List<Tarjeta>> = _earnedCards
 
-    private val repository = CardRepository()
+    init {
+        fetchTarjetas()
+    }
 
-    fun seleccionarTarjetaAleatoria(categoria: String) {
-        viewModelScope.launch {
-            val tarjetas = repository.obtenerTarjetas() // Traemos todas las tarjetas de Firestore
+    // Initialize resources with 1000
+    private val _currentResources = MutableStateFlow(1000)
+    val currentResources: StateFlow<Int> = _currentResources
 
-            // Determina el rango para el id según la categoría
-            val rangoId = when (categoria) {
-                "desastres naturales" -> 1..5
-                "desafios ambientales" -> 6..10
-                "acciones de conservacion" -> 11..15
-                "eventos positivos" -> 16..20
-                else -> null
-            }
-
-            // Si el rango es válido, genera un número aleatorio dentro del rango
-            rangoId?.let {
-                val idAleatorio = it.random()
-                // Filtra tarjetas que coincidan con la categoría y el id aleatorio
-                val tarjetaFiltrada = tarjetas.firstOrNull { tarjeta ->
-                    tarjeta.category == categoria && tarjeta.id == idAleatorio
-                }
-
-                // Actualiza el valor de tarjeta seleccionada si se encuentra la tarjeta
-                tarjetaFiltrada?.let {
-                    _tarjetaSeleccionada.value = it
-                }
-            }
+    fun addCardForTurn() {
+        // Select a random card to simulate the game giving a new card
+        val randomCard = tarjetas.value.randomOrNull()
+        randomCard?.let { card ->
+            _earnedCards.update { it + card }
+            // Update resources by adding the 'recursos' field from the card
+            _currentResources.update { it + (card.recursos as? Int ?: 0) }
         }
     }
+
+    fun fetchTarjetas() {
+        db.collection("tarjetas")
+            .get()
+            .addOnSuccessListener { result ->
+                val tarjetasList = result.map { document ->
+                    document.toObject(Tarjeta::class.java)
+                }
+                _tarjetas.value = tarjetasList
+            }
+            .addOnFailureListener { exception ->
+                // Handle any errors here
+            }
+    }
+
+
 }

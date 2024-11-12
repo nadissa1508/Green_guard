@@ -23,10 +23,8 @@ import com.exercise.greenguard.view.CuentaApp
 import com.exercise.greenguard.view.GameResources
 import com.exercise.greenguard.view.LogInScreen
 import com.exercise.greenguard.view.RegistroApp
-import com.exercise.greenguard.viewmodel.CardViewModel
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.exercise.greenguard.view.MainGameScreen
 
 enum class GreenGuardScreen (@StringRes val title: Int){
     Inicio (title = R.string.Inicio),
