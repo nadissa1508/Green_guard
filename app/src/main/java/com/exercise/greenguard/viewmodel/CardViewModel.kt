@@ -24,12 +24,12 @@ class CardViewModel : ViewModel() {
     val currentResources: StateFlow<Int> = _currentResources
 
     fun addCardForTurn() {
-        // Select a random card to simulate the game giving a new card
         val randomCard = tarjetas.value.randomOrNull()
         randomCard?.let { card ->
             _earnedCards.update { it + card }
-            // Update resources by adding the 'recursos' field from the card
-            _currentResources.update { it + (card.recursos as? Int ?: 0) }
+
+            val recursosValue = card.recursos.toIntOrNull() ?: 0
+            _currentResources.update { it + recursosValue }
         }
     }
 
