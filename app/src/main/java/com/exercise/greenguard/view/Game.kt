@@ -1,6 +1,7 @@
 package com.exercise.greenguard.view
 
 import CardViewModel
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
@@ -22,7 +24,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -50,23 +51,29 @@ import com.exercise.greenguard.ui.theme.RedLight
 import com.exercise.greenguard.ui.theme.Yellow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.LocalContext
 
 
 @Composable
 fun GameResources(
     modifier: Modifier = Modifier,
     cuenta: () -> Unit,
-    viewModel: CardViewModel = CardViewModel()
+    viewModel: CardViewModel = viewModel()
 ) {
     val fondo = painterResource(id = R.drawable.fondo_juego2)
-    val conservacion = painterResource(id = R.drawable.icon_conservacion)
-    val desafios = painterResource(id = R.drawable.icon_desafios)
-    val desastres = painterResource(id = R.drawable.icon_desastres)
-    val positivos = painterResource(id = R.drawable.icon_ev_positivos)
     val usuario = painterResource(id = R.drawable.usuario)
-
+    val context = LocalContext.current
     val earnedCards by viewModel.earnedCards.collectAsState()
     val currentResources by viewModel.currentResources.collectAsState()
+    val toastMessage by viewModel.toastMessage.observeAsState()
+
+    toastMessage?.let {
+        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        viewModel._toastMessage.postValue(null)
+    }
 
     Box(modifier) {
         Image(
@@ -95,7 +102,9 @@ fun GameResources(
                             .padding(vertical = 8.dp)
                     )
                     TextButton(
-                        onClick = { viewModel.addCardForTurn() },
+                        onClick = {
+                                    viewModel.addCardForTurn()
+                                  },
                         modifier = Modifier.padding(vertical = 16.dp)
                     ) {
                         Text("Terminar turno", fontSize = 20.sp, fontWeight = FontWeight.Bold)
@@ -114,7 +123,7 @@ fun GameResources(
                 )
             }
 
-            Spacer(modifier = Modifier.height(110.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             //fila para arboles
             Row(
@@ -205,54 +214,92 @@ fun GameResources(
     }
 }
 
-
 @Composable
 fun TarjetaSeleccionada(
     modifier: Modifier = Modifier,
     color: Color,
+    categoriaIcon: Int,
     titulo: String,
     accion: String,
-    onInfoClick: () -> Unit
+    recursos: String,
+    onInfoClick: () -> Unit,
+    viewModel: CardViewModel = viewModel()
 ) {
+    val scrollState = rememberScrollState()
     Card(
         colors = CardDefaults.cardColors(containerColor = color),
         modifier = modifier
-            .width(150.dp)
-            .height(275.dp)
+            .width(180.dp)
+            .height(570.dp)
             .padding(5.dp)
             .fillMaxHeight()
+
     ) {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .verticalScroll(scrollState)
         ) {
-            // Título y Acción
-            Text(
-                text = titulo,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
-            Spacer(modifier = Modifier.height(3.dp))
-            Text(
-                text = accion,
-                fontSize = 9.sp,
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                lineHeight = 12.sp
-            )
-
-            // Ícono de Información
-            Image(
-                painter = painterResource(id = R.drawable.ic_info),
-                contentDescription = null,
+            Column(
                 modifier = Modifier
-                    .size(24.dp)
-                    .clickable { onInfoClick() }
-            )
+                    .fillMaxSize()
+                    .padding(16.dp),
+            ) {
+                // Título y el icono de informacion
+                Image(
+                    painter = painterResource(id = R.drawable.ic_info),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .align(Alignment.End)
+                        .clickable { onInfoClick() },
+                )
+                Text(
+                    text = titulo,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = accion,
+                    fontSize = 12.sp,
+                    color = Color.White,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 4.dp)
+                )
+
+                // Ícono de chequecito y de categoria
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (categoriaIcon == R.drawable.icon_conservacion) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_si),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(28.dp)
+                                .clickable {
+                                    when (categoriaIcon) {
+                                        R.drawable.icon_conservacion -> viewModel.usarTarjetaConservacion(recursos)
+                                    }
+                                }
+                        )
+                    }
+
+                    Image(
+                        painter = painterResource(id = categoriaIcon),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(28.dp)
+                    )
+                }
+            }
         }
     }
 }
@@ -279,11 +326,8 @@ fun DescripcionDialog(
     )
 }
 
-
-
-
 @Composable
-fun GameScreen(viewModel: CardViewModel = CardViewModel()) {
+fun GameScreen(viewModel: CardViewModel = viewModel()) {
     val earnedCards by viewModel.earnedCards.collectAsState()
     val showDescripcionDialog = remember { mutableStateOf(false) }
     var selectedTarjeta by remember { mutableStateOf<Tarjeta?>(null) }
@@ -303,8 +347,16 @@ fun GameScreen(viewModel: CardViewModel = CardViewModel()) {
                     "eventos positivos" -> Yellow
                     else -> Gray
                 },
+                categoriaIcon = when (tarjeta.categoria) {
+                    "desastres naturales" -> R.drawable.icon_desastres
+                    "desafios ambientales" -> R.drawable.icon_desafios
+                    "acciones de conservacion" -> R.drawable.icon_conservacion
+                    "eventos positivos" -> R.drawable.icon_ev_positivos
+                    else -> R.drawable.icon_desastres
+                },
                 titulo = tarjeta.titulo,
                 accion = tarjeta.accion,
+                recursos = tarjeta.recursos,
                 onInfoClick = {
                     selectedTarjeta = tarjeta
                     showDescripcionDialog.value = true
