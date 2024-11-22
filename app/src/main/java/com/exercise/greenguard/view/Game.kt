@@ -70,6 +70,7 @@ fun GameResources(
     val usuario = painterResource(id = R.drawable.usuario)
     val context = LocalContext.current
     val earnedCards by viewModel.earnedCards.collectAsState()
+    val idUser by viewModel.userId.collectAsState()
     val currentResources by viewModel.currentResources.collectAsState()
     val toastMessage by viewModel.toastMessage.observeAsState()
 
@@ -113,102 +114,23 @@ fun GameResources(
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
-                Image(
-                    modifier = Modifier
-                        .size(50.dp)
-                        .clip(RoundedCornerShape(100.dp))
-                        .clickable { cuenta() },
-                    contentScale = ContentScale.Crop,
-                    painter = usuario,
-                    contentDescription = null
-                )
+                if(idUser != null){
+                    Image(
+                        modifier = Modifier
+                            .size(50.dp)
+                            .clip(RoundedCornerShape(100.dp))
+                            .clickable { cuenta() },
+                        contentScale = ContentScale.Crop,
+                        painter = usuario,
+                        contentDescription = null
+                    )
+                }
             }
 
 
             Spacer(modifier = Modifier.weight(1f))
 
-//            //fila para arboles
-//            Row(
-//                modifier = Modifier.fillMaxWidth(),
-//                horizontalArrangement = Arrangement.SpaceEvenly
-//            ){
-//                val arbol = painterResource(id = R.drawable.arbol)
-//
-//                Image(
-//                    painter = arbol,
-//                    contentDescription = "Árbol",
-//                    modifier = Modifier.size(120.dp)
-//                )
-//                Image(
-//                    painter = arbol,
-//                    contentDescription = "Árbol",
-//                    modifier = Modifier.size(120.dp)
-//                )
-//                Image(
-//                    painter = arbol,
-//                    contentDescription = "árbol",
-//                    modifier = Modifier.size(120.dp)
-//                )
-//
-//            }
-//
-//            //fila para maiz
-//            Row(
-//                modifier = Modifier.fillMaxWidth(),
-//                horizontalArrangement = Arrangement.SpaceEvenly
-//            ){
-//                val elotes = painterResource(id = R.drawable.elotes)
-//
-//                Image(
-//                    painter = elotes,
-//                    contentDescription = "Elote",
-//                    modifier = Modifier.size(90.dp)
-//                )
-//                Image(
-//                    painter = elotes,
-//                    contentDescription = "Elote",
-//                    modifier = Modifier.size(90.dp)
-//                )
-//                Image(
-//                    painter = elotes,
-//                    contentDescription = "Elote",
-//                    modifier = Modifier.size(90.dp)
-//                )
-//
-//
-//            }
-//
-//
-//            //fila para flores, arbustos y venado
-//
-//            Row(
-//                modifier = Modifier.fillMaxWidth(),
-//                horizontalArrangement = Arrangement.SpaceEvenly
-//            ){
-//                val flores = painterResource(id = R.drawable.flores)
-//                val arbusto = painterResource(id = R.drawable.arbusto)
-//                val venado = painterResource(id = R.drawable.venado)
-//
-//                Image(
-//                    painter = flores,
-//                    contentDescription = "Flores",
-//                    modifier = Modifier.size(100.dp)
-//                )
-//                Image(
-//                    painter = venado,
-//                    contentDescription = "Venado",
-//                    modifier = Modifier.size(130.dp)
-//                )
-//                Image(
-//                    painter = arbusto,
-//                    contentDescription = "Arbusto",
-//                    modifier = Modifier.size(100.dp)
-//                )
-//
-//            }
-
             DisplayResourceImages(currentResources)
-
 
             // Display the earned cards in a LazyRow
             GameScreen(viewModel = viewModel)
@@ -232,6 +154,7 @@ fun TarjetaSeleccionada(
     val scrollState = rememberScrollState()
     Card(
         colors = CardDefaults.cardColors(containerColor = color),
+        shape = RoundedCornerShape(24.dp),
         modifier = modifier
             .width(180.dp)
             .height(570.dp)
@@ -291,6 +214,7 @@ fun TarjetaSeleccionada(
                                         R.drawable.icon_conservacion -> viewModel.usarTarjetaConservacion(recursos)
                                     }
                                 }
+
                         )
                     }
 

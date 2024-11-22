@@ -1,5 +1,6 @@
 package com.exercise.greenguard
 
+import CardViewModel
 import android.annotation.SuppressLint
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
@@ -24,6 +25,7 @@ import com.exercise.greenguard.view.GameResources
 import com.exercise.greenguard.view.LogInScreen
 import com.exercise.greenguard.view.RegistroApp
 import androidx.compose.runtime.remember
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 enum class GreenGuardScreen (@StringRes val title: Int){
@@ -46,6 +48,13 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Llamar a logout cuando la app se va a segundo plano o se cierra
+        val viewModel: CardViewModel = ViewModelProvider(this)[CardViewModel::class.java]
+        viewModel.logout()
     }
 }
 
