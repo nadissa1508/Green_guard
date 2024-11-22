@@ -55,6 +55,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.items
 
 
 @Composable
@@ -87,12 +90,10 @@ fun GameResources(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-
             Row(modifier = Modifier.fillMaxWidth()) {
-                Column (modifier = Modifier.weight(1f), horizontalAlignment = Alignment.Start) {
+                Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.Start) {
                     Text(
                         text = "RECURSOS: $currentResources", // Display updated resources
                         fontSize = 26.sp,
@@ -103,8 +104,8 @@ fun GameResources(
                     )
                     TextButton(
                         onClick = {
-                                    viewModel.addCardForTurn()
-                                  },
+                            viewModel.addCardForTurn()
+                        },
                         modifier = Modifier.padding(vertical = 16.dp)
                     ) {
                         Text("Terminar turno", fontSize = 20.sp, fontWeight = FontWeight.Bold)
@@ -123,87 +124,90 @@ fun GameResources(
                 )
             }
 
-            Spacer(modifier = Modifier.height(30.dp))
 
-            //fila para arboles
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ){
-                val arbol = painterResource(id = R.drawable.arbol)
+            Spacer(modifier = Modifier.weight(1f))
 
-                Image(
-                    painter = arbol,
-                    contentDescription = "Árbol",
-                    modifier = Modifier.size(120.dp)
-                )
-                Image(
-                    painter = arbol,
-                    contentDescription = "Árbol",
-                    modifier = Modifier.size(120.dp)
-                )
-                Image(
-                    painter = arbol,
-                    contentDescription = "árbol",
-                    modifier = Modifier.size(120.dp)
-                )
+//            //fila para arboles
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceEvenly
+//            ){
+//                val arbol = painterResource(id = R.drawable.arbol)
+//
+//                Image(
+//                    painter = arbol,
+//                    contentDescription = "Árbol",
+//                    modifier = Modifier.size(120.dp)
+//                )
+//                Image(
+//                    painter = arbol,
+//                    contentDescription = "Árbol",
+//                    modifier = Modifier.size(120.dp)
+//                )
+//                Image(
+//                    painter = arbol,
+//                    contentDescription = "árbol",
+//                    modifier = Modifier.size(120.dp)
+//                )
+//
+//            }
+//
+//            //fila para maiz
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceEvenly
+//            ){
+//                val elotes = painterResource(id = R.drawable.elotes)
+//
+//                Image(
+//                    painter = elotes,
+//                    contentDescription = "Elote",
+//                    modifier = Modifier.size(90.dp)
+//                )
+//                Image(
+//                    painter = elotes,
+//                    contentDescription = "Elote",
+//                    modifier = Modifier.size(90.dp)
+//                )
+//                Image(
+//                    painter = elotes,
+//                    contentDescription = "Elote",
+//                    modifier = Modifier.size(90.dp)
+//                )
+//
+//
+//            }
+//
+//
+//            //fila para flores, arbustos y venado
+//
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceEvenly
+//            ){
+//                val flores = painterResource(id = R.drawable.flores)
+//                val arbusto = painterResource(id = R.drawable.arbusto)
+//                val venado = painterResource(id = R.drawable.venado)
+//
+//                Image(
+//                    painter = flores,
+//                    contentDescription = "Flores",
+//                    modifier = Modifier.size(100.dp)
+//                )
+//                Image(
+//                    painter = venado,
+//                    contentDescription = "Venado",
+//                    modifier = Modifier.size(130.dp)
+//                )
+//                Image(
+//                    painter = arbusto,
+//                    contentDescription = "Arbusto",
+//                    modifier = Modifier.size(100.dp)
+//                )
+//
+//            }
 
-            }
-
-            //fila para maiz
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ){
-                val elotes = painterResource(id = R.drawable.elotes)
-
-                Image(
-                    painter = elotes,
-                    contentDescription = "Elote",
-                    modifier = Modifier.size(90.dp)
-                )
-                Image(
-                    painter = elotes,
-                    contentDescription = "Elote",
-                    modifier = Modifier.size(90.dp)
-                )
-                Image(
-                    painter = elotes,
-                    contentDescription = "Elote",
-                    modifier = Modifier.size(90.dp)
-                )
-
-
-            }
-
-
-            //fila para flores, arbustos y venado
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ){
-                val flores = painterResource(id = R.drawable.flores)
-                val arbusto = painterResource(id = R.drawable.arbusto)
-                val venado = painterResource(id = R.drawable.venado)
-
-                Image(
-                    painter = flores,
-                    contentDescription = "Flores",
-                    modifier = Modifier.size(100.dp)
-                )
-                Image(
-                    painter = venado,
-                    contentDescription = "Venado",
-                    modifier = Modifier.size(130.dp)
-                )
-                Image(
-                    painter = arbusto,
-                    contentDescription = "Arbusto",
-                    modifier = Modifier.size(100.dp)
-                )
-
-            }
+            DisplayResourceImages(currentResources)
 
 
             // Display the earned cards in a LazyRow
@@ -232,7 +236,6 @@ fun TarjetaSeleccionada(
             .width(180.dp)
             .height(570.dp)
             .padding(5.dp)
-            .fillMaxHeight()
 
     ) {
         Box(
@@ -245,7 +248,6 @@ fun TarjetaSeleccionada(
                     .fillMaxSize()
                     .padding(16.dp),
             ) {
-                // Título y el icono de informacion
                 Image(
                     painter = painterResource(id = R.drawable.ic_info),
                     contentDescription = null,
@@ -324,6 +326,59 @@ fun DescripcionDialog(
             }
         }
     )
+}
+
+@Composable
+fun DisplayResourceImages(currentResources: Int) {
+    val resourceImages = mutableListOf<Int>()
+
+    // Determine how many images to show based on current resources
+    var remainingResources = currentResources
+
+    // Add trees (100 resources each)
+    while (remainingResources >= 100) {
+        resourceImages.add(R.drawable.arbol)
+        remainingResources -= 100
+    }
+
+    // Add corn (50 resources each)
+    while (remainingResources >= 50) {
+        resourceImages.add(R.drawable.elotes)
+        remainingResources -= 50
+    }
+
+    // Add deer (25 resources each)
+    while (remainingResources >= 25) {
+        resourceImages.add(R.drawable.venado)
+        remainingResources -= 25
+    }
+
+    // Add flowers (10 resources each)
+    while (remainingResources >= 10) {
+        resourceImages.add(R.drawable.flores) // or R.drawable.arbusto depending on your design
+        remainingResources -= 10
+    }
+
+    // Set a fixed height for the grid
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(350.dp) // Set the desired height here
+            .padding(vertical = 16.dp)
+    ) {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(3), // Change the number of columns as needed
+            content = {
+                items(resourceImages) { imageRes ->
+                    Image(
+                        painter = painterResource(id = imageRes),
+                        contentDescription = null,
+                        modifier = Modifier.size(150.dp) // Adjust size as needed
+                    )
+                }
+            }
+        )
+    }
 }
 
 @Composable
