@@ -1,5 +1,6 @@
 package com.exercise.greenguard
 
+import CardViewModel
 import android.annotation.SuppressLint
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
@@ -12,15 +13,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.exercise.greenguard.data.repository.CardRepository
 import com.exercise.greenguard.ui.theme.GreenGuardTheme
 import com.exercise.greenguard.view.CuentaApp
 import com.exercise.greenguard.view.GameResources
 import com.exercise.greenguard.view.LogInScreen
 import com.exercise.greenguard.view.RegistroApp
+import androidx.compose.runtime.remember
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 enum class GreenGuardScreen (@StringRes val title: Int){
     Inicio (title = R.string.Inicio),
@@ -42,6 +48,13 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Llamar a logout cuando la app se va a segundo plano o se cierra
+        val viewModel: CardViewModel = ViewModelProvider(this)[CardViewModel::class.java]
+        viewModel.logout()
     }
 }
 
@@ -86,9 +99,10 @@ fun GreenGuardApp(){
 
             composable(route = GreenGuardScreen.Juego.name) {
                 GameResources(
-                    cuenta = { navController.navigate(GreenGuardScreen.Cuenta.name) }
+                    cuenta = { navController.navigate(GreenGuardScreen.Cuenta.name) },
                 )
             }
+
             composable (route = GreenGuardScreen.Cuenta.name){
                 CuentaApp()
             }
