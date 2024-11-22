@@ -56,6 +56,15 @@ class MainActivity : ComponentActivity() {
         val viewModel: CardViewModel = ViewModelProvider(this)[CardViewModel::class.java]
         viewModel.logout()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val viewModel: CardViewModel = ViewModelProvider(this)[CardViewModel::class.java]
+        if (isFinishing) { // Solo realiza logout si la actividad se está cerrando completamente
+            viewModel.logout()
+
+        }
+    }
 }
 
 @Composable
